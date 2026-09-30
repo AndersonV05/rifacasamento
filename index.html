@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Controle de vendas e pagamentos da Grande Rifa">
+<title>Grande Rifa</title>
+
+<!-- Fontes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Estilos (a ordem importa: o responsivo fica por último) -->
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/ticket.css">
+<link rel="stylesheet" href="css/numeros.css">
+<link rel="stylesheet" href="css/componentes.css">
+<link rel="stylesheet" href="css/janelas.css">
+<link rel="stylesheet" href="css/login.css">
+<link rel="stylesheet" href="css/responsivo.css">
+</head>
+<body>
+
+<!-- Tela de login (aparece enquanto ninguém autorizado estiver logado) -->
+<div class="login" id="login">
+  <div class="login-card">
+    <h2>Grande Rifa</h2>
+    <p>Entre com a sua conta Google para ver e editar as vendas.</p>
+    <button type="button" class="btn primary" id="btnLogin">Entrar com Google</button>
+    <p class="login-msg" id="loginMsg" role="alert"></p>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V8z" fill="currentColor"/><path d="M14 6.5v11" stroke="#1E1A63" stroke-width="1.6" stroke-dasharray="2 2.2"/></svg>
+      </div>
+      <div><b id="brandTitle">Grande Rifa</b><small>Controle de vendas e pagamentos</small></div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Seções">
+      <button class="tab" role="tab" id="tab-num" aria-controls="panel-num" aria-selected="true" type="button">Números</button>
+      <button class="tab" role="tab" id="tab-ppl" aria-controls="panel-ppl" aria-selected="false" type="button">Participantes <span class="c" id="tabCount">0</span></button>
+      <button class="tab" role="tab" id="tab-cfg" aria-controls="panel-cfg" aria-selected="false" type="button">Configurações</button>
+    </div>
+    <div class="save busy" id="saveStatus" aria-live="polite">Carregando…</div>
+    <button type="button" class="btn-sair" id="btnSair" hidden>Sair</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ===================== ABA NÚMEROS ===================== -->
+  <main id="panel-num" role="tabpanel" aria-labelledby="tab-num">
+    <header class="ticket">
+      <div class="ticket-main">
+        <div class="range" id="range"></div>
+        <h1 id="titulo">Grande Rifa</h1>
+        <div id="heroCopy"></div>
+        <div class="meter-wrap">
+          <div class="meter" id="meter" role="img"></div>
+          <div class="meter-text" id="meterText"></div>
+        </div>
+      </div>
+      <div class="stub">
+        <div><small>Cada número</small><div class="price"><span class="cur">R$</span><span class="val" id="priceVal"></span></div></div>
+        <div><small>Sorteio</small><div class="draw" id="drawText"></div></div>
+      </div>
+    </header>
+
+    <section class="stats" aria-label="Resumo da rifa" id="stats"></section>
+
+    <section class="section" id="numeros">
+      <div class="head">
+        <h2>Números</h2>
+        <p>Toque em um número para registrar de quem é e como foi pago. Busque um nome para ver se a pessoa já pagou.</p>
+      </div>
+
+      <div class="tools">
+        <label class="search">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="2"/><path d="M14 14l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="q" type="search" placeholder="Buscar nome ou número" aria-label="Buscar nome ou número" autocomplete="off">
+        </label>
+        <div class="chips" id="chips" role="group" aria-label="Filtrar números"></div>
+      </div>
+
+      <div class="found" id="found" hidden></div>
+
+      <div class="board">
+        <div class="legend">
+          <span><i class="sw"></i>Livre</span>
+          <span><i class="sw res"></i>Reservado (aguardando pagamento)</span>
+          <span><i class="sw pago"></i>Pago</span>
+        </div>
+        <div class="grid" id="grid" role="group" aria-label="Números da rifa"></div>
+        <div class="empty" id="empty" hidden>
+          <div>Nenhum número encontrado.</div>
+          <button type="button" id="resetFilters">Limpar busca e filtros</button>
+        </div>
+        <p class="detail" id="detail" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== ABA PARTICIPANTES ===================== -->
+  <main id="panel-ppl" role="tabpanel" aria-labelledby="tab-ppl" hidden>
+    <div class="head">
+      <h2>Participantes</h2>
+      <p>Quem está na rifa, quanto já pagou e de que forma.</p>
+    </div>
+    <section class="stats three" id="pStats" aria-label="Resumo dos participantes"></section>
+
+    <div class="tools">
+      <label class="search">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="2"/><path d="M14 14l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="pq" type="search" placeholder="Buscar participante" aria-label="Buscar participante" autocomplete="off">
+      </label>
+      <div class="chips" id="pchips" role="group" aria-label="Filtrar participantes"></div>
+      <select class="sort" id="psort" aria-label="Ordenar por">
+        <option value="nome">Ordem alfabética</option>
+        <option value="qtd">Mais números</option>
+        <option value="falta">Maior valor pendente</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <table class="tbl">
+        <thead>
+          <tr><th>Participante</th><th>Números</th><th class="r">Pago</th><th class="r">Falta</th><th>Forma</th><th>Situação</th><th></th></tr>
+        </thead>
+        <tbody id="pbody"></tbody>
+      </table>
+      <div class="empty" id="pempty" hidden>
+        <div id="pemptyMsg">Nenhum participante encontrado.</div>
+        <button type="button" id="pReset">Limpar busca e filtros</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===================== ABA CONFIGURAÇÕES ===================== -->
+  <main id="panel-cfg" role="tabpanel" aria-labelledby="tab-cfg" hidden>
+    <div class="head">
+      <h2>Configurações</h2>
+      <p>Faça uma cópia de segurança das vendas ou restaure os dados a partir de um arquivo.</p>
+    </div>
+    <div class="cfg-grid">
+      <section class="cfg-card">
+        <h3>Exportar dados</h3>
+        <p>Baixe uma cópia com todos os números, nomes, datas e pagamentos. Use o backup (.json) para restaurar depois ou a planilha (.csv) para abrir no Excel/Google Planilhas.</p>
+        <div class="cfg-actions">
+          <button type="button" class="btn primary" id="btnExport">Exportar backup (.json)</button>
+          <button type="button" class="btn" id="btnExportCsv">Exportar planilha (.csv)</button>
+        </div>
+      </section>
+      <section class="cfg-card">
+        <h3>Importar dados</h3>
+        <p>Restaure as vendas a partir de um arquivo de backup (.json) gerado aqui. Atenção: os dados importados substituem todas as vendas atuais.</p>
+        <div class="cfg-actions">
+          <button type="button" class="btn" id="btnImport">Escolher arquivo (.json)</button>
+          <input id="importFile" type="file" accept=".json,application/json" hidden>
+        </div>
+        <p class="cfg-msg" id="cfgMsg" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+  </main>
+
+  <footer id="footer"></footer>
+</div>
+
+<!-- Editor de número -->
+<dialog id="dlg" aria-labelledby="edNum">
+  <div class="dlg">
+    <h2 id="edNum"></h2>
+    <p class="sub" id="edSub"></p>
+    <label class="f" for="edName">Nome de quem ficou com o número</label>
+    <input id="edName" type="text" autocomplete="off" placeholder="Digite um nome novo ou escolha abaixo">
+    <p class="hint" id="nameHint"></p>
+    <div class="sugg-title" id="suggTitle">Pessoas já cadastradas</div>
+    <div class="sugg" id="sugg" role="group" aria-label="Pessoas já cadastradas"></div>
+    <label class="f" for="edDate" style="margin-top:16px">Data da venda</label>
+    <input id="edDate" type="date" autocomplete="off">
+    <div class="f" style="margin-top:16px" id="payLbl">Pagamento</div>
+    <div class="seg" id="edPay" role="radiogroup" aria-labelledby="payLbl">
+      <button type="button" role="radio" data-v="none">Ainda não pagou</button>
+      <button type="button" role="radio" data-v="Pix">Pagou no Pix</button>
+      <button type="button" role="radio" data-v="Espécie">Pagou em espécie</button>
+    </div>
+    <p class="err" id="edErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn danger" id="edDel" hidden>Remover venda</button>
+      <button type="button" class="btn" id="edCancel">Cancelar</button>
+      <button type="button" class="btn primary" id="edSave">Salvar</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Pagar tudo de uma pessoa -->
+<dialog id="dlgPay" aria-labelledby="payTitle">
+  <div class="dlg">
+    <h2 id="payTitle" style="font-size:1.6rem"></h2>
+    <p class="sub" id="paySub"></p>
+    <div class="f">Como foi pago?</div>
+    <div class="seg two solid" id="payAllSeg">
+      <button type="button" data-v="Pix">Pix</button>
+      <button type="button" data-v="Espécie">Espécie</button>
+    </div>
+    <div class="dlg-actions"><button type="button" class="btn" id="payCancel">Cancelar</button></div>
+  </div>
+</dialog>
+
+<!-- Firebase (login + banco de dados) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<!-- Scripts (a ordem importa: cada arquivo usa o que os anteriores definem) -->
+<script src="js/config.js"></script>            <!-- título, valor, total de números -->
+<script src="js/firebase-config.js"></script>  <!-- chaves do seu projeto Firebase -->
+<script src="js/vendas.js"></script>            <!-- carga inicial (só usada 1 vez) -->
+<script src="js/utils.js"></script>
+<script src="js/dados.js"></script>
+<script src="js/armazenamento.js"></script>
+<script src="js/pessoas.js"></script>
+<script src="js/cabecalho.js"></script>
+<script src="js/aba-numeros.js"></script>
+<script src="js/aba-participantes.js"></script>
+<script src="js/render.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/aba-configuracoes.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

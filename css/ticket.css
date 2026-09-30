@@ -1,0 +1,42 @@
+/* =====================================================================
+   BILHETE E INDICADORES — topo da página e cartões de resumo
+   ===================================================================== */
+
+/* ---------- Bilhete ---------- */
+.ticket { display: grid; grid-template-columns: 1fr 230px; background: var(--brand); color: #fff; border-radius: 24px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+.ticket-main { padding: 34px 40px 30px; display: flex; flex-direction: column; gap: 16px; }
+.range { display: flex; align-items: center; gap: 14px; font-size: .92rem; color: rgba(255,255,255,.75); font-weight: 500; }
+.range::after { content: ""; flex: 0 1 100px; height: 2px; background: rgba(255,255,255,.28); border-radius: 2px; }
+.ticket h1 { font-size: clamp(2.4rem, 6.5vw, 4.4rem); line-height: .95; font-weight: 800; letter-spacing: -0.035em; font-variation-settings: "opsz" 96; }
+.prize strong { font-family: var(--display); font-size: 1.25rem; font-weight: 700; display: block; }
+.prize span { color: rgba(255,255,255,.8); }
+.tagline { margin: 0; font-size: 1.05rem; color: rgba(255,255,255,.82); }
+.meter-wrap { margin-top: 8px; }
+.meter { display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.16); animation: reveal 1s cubic-bezier(.2,.7,.2,1) both; }
+.meter i { display: block; height: 100%; }
+.meter .m-paid { background: #35CC93; }
+.meter .m-res { background: var(--gold); }
+.meter-text { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 10px; font-size: .93rem; color: rgba(255,255,255,.85); }
+.meter-text b { color: #fff; }
+@keyframes reveal { from { clip-path: inset(0 100% 0 0 round 999px); } to { clip-path: inset(0 0 0 0 round 999px); } }
+.stub { background: var(--gold); color: #241A00; padding: 30px 26px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; border-left: 3px dashed rgba(30,26,99,.55); position: relative; }
+.stub::before, .stub::after { content: ""; position: absolute; left: -17px; width: 30px; height: 30px; border-radius: 50%; background: var(--bg); }
+.stub::before { top: -15px; }
+.stub::after { bottom: -15px; }
+.stub small { display: block; font-size: .92rem; font-weight: 600; }
+.price { font-family: var(--display); font-weight: 800; line-height: .9; letter-spacing: -0.04em; }
+.price .cur { font-size: 1.5rem; vertical-align: top; margin-right: 4px; letter-spacing: 0; }
+.price .val { font-size: 4.6rem; }
+.draw { font-family: var(--display); font-weight: 700; font-size: 1.15rem; line-height: 1.2; }
+
+/* ---------- Indicadores ---------- */
+.stats { margin-top: 16px; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--surface); border: 1.5px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+.stats.three { grid-template-columns: repeat(3, 1fr); margin-top: 0; margin-bottom: 20px; }
+.stat { padding: 18px 22px; }
+.stat + .stat { border-left: 1.5px solid var(--line); }
+.stat-label { display: flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--ink-2); font-weight: 500; }
+.stat-value { font-family: var(--display); font-weight: 700; font-size: 2rem; line-height: 1.15; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; margin-top: 4px; }
+.stat-note { font-size: .84rem; color: var(--ink-2); }
+.sw { width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--line); background: var(--cell); flex: none; }
+.sw.res { background: var(--gold-soft); border-color: var(--gold-line); }
+.sw.pago { background: var(--green); border-color: var(--green); }

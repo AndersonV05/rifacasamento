@@ -1,0 +1,54 @@
+/* =====================================================================
+   VARIÁVEIS — cores, fontes e tema escuro
+   Mude as cores do site aqui (tema claro em :root, escuro mais abaixo).
+   ===================================================================== */
+
+:root {
+  --bg: #F2F1F9;
+  --surface: #FFFFFF;
+  --surface-2: #F8F7FD;
+  --cell: #FFFFFF;
+  --ink: #1A1846;
+  --ink-2: #5A5883;
+  --line: #DEDCEE;
+  --accent: #3B33B8;
+  --brand: #1E1A63;
+  --gold: #F6B93B;
+  --gold-soft: #FFEFC9;
+  --gold-line: #EFCB78;
+  --gold-ink: #5F4200;
+  --rasp: #D62F63;
+  --rasp-soft: #FCE4EC;
+  --rasp-ink: #A01F48;
+  --green: #12805A;
+  --green-soft: #D9F2E6;
+  --green-ink: #0B5A3F;
+  --shadow: 0 1px 2px rgba(26,24,90,.06), 0 10px 28px rgba(26,24,90,.07);
+  --display: 'Bricolage Grotesque', 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+  --body: 'Figtree', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --av-bg: 65% 90%;
+  --av-ink: 55% 28%;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F0E26; --surface: #181745; --surface-2: #1D1C4E; --cell: #1F1E52;
+    --ink: #EFEEFF; --ink-2: #ABA9D3; --line: #34326D; --accent: #9A94FF; --brand: #262187;
+    --gold-soft: #47380F; --gold-line: #6E571A; --gold-ink: #FFD98A;
+    --rasp-soft: #4B1A32; --rasp-ink: #FF9DBB;
+    --green-soft: #0F3D2E; --green-ink: #7FE0B5;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.25);
+    --av-bg: 40% 26%; --av-ink: 80% 86%;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F0E26; --surface: #181745; --surface-2: #1D1C4E; --cell: #1F1E52;
+  --ink: #EFEEFF; --ink-2: #ABA9D3; --line: #34326D; --accent: #9A94FF; --brand: #262187;
+  --gold-soft: #47380F; --gold-line: #6E571A; --gold-ink: #FFD98A;
+  --rasp-soft: #4B1A32; --rasp-ink: #FF9DBB;
+  --green-soft: #0F3D2E; --green-ink: #7FE0B5;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.25);
+  --av-bg: 40% 26%; --av-ink: 80% 86%;
+}

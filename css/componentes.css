@@ -1,0 +1,33 @@
+/* =====================================================================
+   COMPONENTES — avatares, etiquetas, selos e tabela de participantes
+   ===================================================================== */
+
+/* ---------- Avatares, tags, selos ---------- */
+.av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex: none; font-family: var(--display); font-weight: 700; font-size: .95rem; background: hsl(var(--h) var(--av-bg)); color: hsl(var(--h) var(--av-ink)); }
+.av.sm { width: 30px; height: 30px; font-size: .8rem; }
+.tag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-family: var(--display); font-weight: 700; font-size: .92rem; font-variant-numeric: tabular-nums; background: var(--gold-soft); color: var(--gold-ink); border: 1.5px solid var(--gold-line); cursor: pointer; }
+.tag.pago { background: var(--green-soft); color: var(--green-ink); border-color: transparent; }
+.tag .fm { font-family: var(--body); font-weight: 600; font-size: .78rem; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-weight: 700; font-size: .85rem; white-space: nowrap; }
+.badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.badge.ok { background: var(--green-soft); color: var(--green-ink); }
+.badge.part { background: var(--gold-soft); color: var(--gold-ink); }
+.badge.pend { background: var(--rasp-soft); color: var(--rasp-ink); }
+
+/* ---------- Tabela de participantes ---------- */
+.card { background: var(--surface); border: 1.5px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); overflow-x: auto; }
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl td:last-child, .tbl th:last-child { padding-right: 18px; text-align: right; }
+.tbl th { text-align: left; font-size: .82rem; font-weight: 600; color: var(--ink-2); padding: 12px 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--line); white-space: nowrap; }
+.tbl td { padding: 14px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.tbl tbody tr:last-child td { border-bottom: 0; }
+.tbl tbody tr:hover td { background: var(--surface-2); }
+.tbl .r { text-align: right; font-variant-numeric: tabular-nums; }
+.who-cell { display: flex; align-items: center; gap: 12px; min-width: 175px; }
+.who-cell b { display: block; font-weight: 700; line-height: 1.25; }
+.who-cell small { color: var(--ink-2); font-size: .84rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; min-width: 150px; }
+.money { font-family: var(--display); font-weight: 700; font-size: 1.02rem; }
+.muted { color: var(--ink-2); }
+.mini { height: 36px; padding: 0 14px; border-radius: 10px; border: 1.5px solid var(--green); background: transparent; color: var(--green-ink); font-weight: 700; cursor: pointer; font-size: .88rem; white-space: nowrap; }
+.mini:hover { background: var(--green-soft); }

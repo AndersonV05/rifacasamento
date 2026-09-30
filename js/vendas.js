@@ -1,0 +1,40 @@
+/* CARGA INICIAL — [número, nome, pago (1/0), data da venda, forma de pagamento].
+   Essa lista é enviada ao banco UMA ÚNICA VEZ, na primeira vez que um usuário autorizado entra
+   com o banco vazio. Depois disso o banco é a fonte dos dados: editar este arquivo NÃO altera as vendas.
+   Quando o banco já estiver povoado, você pode deixar  const VENDAS = [];  para não expor nomes no GitHub. */
+const VENDAS = [
+  [1,'Manoel',0,'2026-07-08',null],
+  [6,'Eliana',0,'2026-07-08',null],
+  [8,'Vovó Lú',0,'2026-07-08',null],
+  [10,'Samilly',0,'2026-07-08',null],
+  [12,'Ju',0,'2026-07-08',null],
+  [13,'Irmã Malú',0,'2026-07-08',null],
+  [14,'Irmã Malú',0,'2026-07-08',null],
+  [16,'Eliana',0,'2026-07-08',null],
+  [17,'Vinicius',1,'2026-07-08','Pix'],
+  [18,'Vovó Lú',1,'2026-07-08','Espécie'],
+  [19,'Rebeca',1,'2026-07-08','Pix'],
+  [20,'Anthony',0,'2026-07-08',null],
+  [22,'Painho',0,'2026-07-08',null],
+  [23,'Meyri (Igreja)',0,'2026-07-08',null],
+  [25,'Titia Xoxa',0,'2026-07-09',null],
+  [28,'João',0,'2026-07-08',null],
+  [30,'Tia Ninha',0,'2026-07-08',null],
+  [33,'Irmã Meyrinha',0,'2026-07-08',null],
+  [35,'Tia Ninha',0,'2026-07-08',null],
+  [56,'Zeza (vovó)',0,'2026-07-09',null],
+  [58,'Jô (mãe de Ester)',0,'2026-07-09',null],
+  [67,'Hayonan',0,'2026-07-08',null],
+  [75,'Painho',0,'2026-07-08',null],
+  [80,'Zeza (vovó)',0,'2026-07-09',null],
+  [82,'Luan',0,'2026-07-08',null],
+  [97,'Luan',0,'2026-07-08',null],
+  [100,'Anthony',0,'2026-07-08',null],
+  [108,'Alisson',1,'2026-07-08','Pix'],
+  [117,'Neno (Ágatha)',0,'2026-07-08',null],
+  [120,'Neno (Ágatha)',0,'2026-07-08',null],
+  [127,'Luan',0,'2026-07-08',null],
+  [162,'Neno (Ágatha)',0,'2026-07-08',null],
+  [164,'Alisson',1,'2026-07-08','Pix'],
+  [200,'Raquel',0,'2026-07-08',null]
+];

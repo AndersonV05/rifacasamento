@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Só estes e-mails (Google) podem ler e editar. TROQUE pelos seus.
+    function autorizado() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in [
+          'SEU-EMAIL@gmail.com',
+          'OUTRA-PESSOA@gmail.com'
+        ];
+    }
+
+    match /rifa_vendas/{id} { allow read, write: if autorizado(); }
+    match /rifa_meta/{id}   { allow read, write: if autorizado(); }
+  }
+}
