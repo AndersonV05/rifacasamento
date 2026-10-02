@@ -27,7 +27,7 @@ function updateNameUI() {
 $('edName').addEventListener('input', updateNameUI);
 
 function openEditor(n) {
-  if (!ready) { $('detail').textContent = 'Aguarde, os dados ainda estão carregando.'; return; }
+  if (!ready) { const msg = ultimoErro || 'Aguarde, os dados ainda estão carregando.'; $('detail').textContent = msg; if (ultimoErro) alert(msg); return; }
   editing = n;
   const s = sales.get(n);
   $('edNum').textContent = 'Número ' + pad(n);
