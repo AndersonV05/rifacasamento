@@ -5,7 +5,8 @@
    - O resto do site só chama  persist()  depois de mudar  sales;
      aqui descobrimos o que mudou e enviamos só essas diferenças.
    ===================================================================== */
-let fbAuth = null, fbDb = null, unsubscribe = null, seeding = false, loginNote = '';
+let fbAuth = null, fbDb = null, unsubscribe = null, seeding = false, loginNote = '', loadTimer = null;
+let ultimoErro = '';                             // último problema com o banco (mostrado ao tentar editar)
 const remote = new Map();                       // n -> assinatura do que está no banco
 
 const toDoc = s => ({ n: s.n, nome: s.nome, pago: !!s.pago, data: s.data, forma: s.forma || null });
@@ -54,6 +55,13 @@ function iniciarSync(user) {
   hideLogin();
   $('btnSair').hidden = false; $('btnSair').title = 'Conectado como ' + user.email;
   setSave('Carregando…', 'busy');
+  clearTimeout(loadTimer);
+  loadTimer = setTimeout(() => {
+    if (!ready) {
+      ultimoErro = 'O banco de dados não respondeu. Confira no Firebase se o Firestore foi criado (Bancos de dados e armazenamento → Firestore Database → Criar banco de dados) e recarregue a página.';
+      setSave('Banco sem resposta', 'err');
+    }
+  }, 10000);
   unsubscribe = fbDb.collection(COLECAO_VENDAS).onSnapshot(async snap => {
     remote.clear();
     const list = [];
@@ -65,6 +73,7 @@ function iniciarSync(user) {
       catch (e) { return erroBanco(e); }
       finally { seeding = false; }
     }
+    clearTimeout(loadTimer); ultimoErro = '';
     loadFrom(list);
     ready = true;
     setSave('Salvo');
@@ -89,12 +98,15 @@ function erroBanco(e) {
     loginNote = quem + ' não tem permissão para acessar. Entre com outra conta.';
     fbAuth.signOut();
   } else {
+    const cod = e && e.code ? e.code : 'desconhecido';
+    ultimoErro = 'Erro do banco de dados (' + cod + '). Confira se o Firestore foi criado e se as regras foram publicadas no Firebase.';
     setSave('Erro de conexão', 'err');
   }
 }
 
 function pararSync() {
   if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+  clearTimeout(loadTimer);
   ready = false; remote.clear(); loadFrom([]); render();
   $('btnSair').hidden = true;
   setSave('Entre para continuar', 'busy');
@@ -112,6 +124,10 @@ async function persist() {
     if (ops) await batch.commit();
     setSave('Salvo');
   } catch (e) {
-    setSave(e && e.code === 'permission-denied' ? 'Sem permissão' : 'Erro ao salvar', 'err');
+    const cod = e && e.code ? e.code : 'desconhecido';
+    setSave(cod === 'permission-denied' ? 'Sem permissão' : 'Erro ao salvar', 'err');
+    alert(cod === 'permission-denied'
+      ? 'Não foi possível salvar: este e-mail não tem permissão. Confira os e-mails em firestore.rules e publique as regras no Firebase.'
+      : 'Não foi possível salvar (' + cod + '). Confira sua internet e as configurações do Firebase.');
   }
 }
