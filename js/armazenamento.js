@@ -1,5 +1,5 @@
 /* =====================================================================
-   ARMAZENAMENTO — login (Google) e banco de dados (Firestore)
+   ARMAZENAMENTO — banco de dados (Firestore) e, opcionalmente, login Google
    - Cada venda é um documento em  rifa_vendas/{número}.
    - A tela é atualizada em tempo real quando outra pessoa altera algo.
    - O resto do site só chama  persist()  depois de mudar  sales;
@@ -9,7 +9,7 @@ let fbAuth = null, fbDb = null, unsubscribe = null, seeding = false, loginNote =
 let ultimoErro = '';                             // último problema com o banco (mostrado ao tentar editar)
 const remote = new Map();                       // n -> assinatura do que está no banco
 
-const toDoc = s => ({ n: s.n, nome: s.nome, pago: !!s.pago, data: s.data, forma: s.forma || null });
+const toDoc = s => ({ n: s.n, nome: s.nome, pago: !!s.pago, data: s.data || null, forma: s.forma || null });
 const sig = s => JSON.stringify(toDoc(s));
 const docRef = n => fbDb.collection(COLECAO_VENDAS).doc(pad(n));
 
@@ -30,8 +30,13 @@ function initStore() {
     return;
   }
   firebase.initializeApp(FIREBASE_CONFIG);
-  fbAuth = firebase.auth();
   fbDb = firebase.firestore();
+  if (!EXIGIR_LOGIN) {                           // modo aberto: sem login
+    hideLogin();
+    iniciarSync(null);
+    return;
+  }
+  fbAuth = firebase.auth();
   $('btnLogin').addEventListener('click', entrar);
   $('btnSair').addEventListener('click', () => fbAuth.signOut());
   fbAuth.onAuthStateChanged(user => user ? iniciarSync(user) : pararSync());
@@ -53,7 +58,7 @@ function entrar() {
 /* ---------- sincronização em tempo real ---------- */
 function iniciarSync(user) {
   hideLogin();
-  $('btnSair').hidden = false; $('btnSair').title = 'Conectado como ' + user.email;
+  if (user) { $('btnSair').hidden = false; $('btnSair').title = 'Conectado como ' + user.email; }
   setSave('Carregando…', 'busy');
   clearTimeout(loadTimer);
   loadTimer = setTimeout(() => {
@@ -94,9 +99,14 @@ async function semearSeNecessario() {
 
 function erroBanco(e) {
   if (e && e.code === 'permission-denied') {
-    const quem = fbAuth.currentUser ? fbAuth.currentUser.email : 'Esta conta';
-    loginNote = quem + ' não tem permissão para acessar. Entre com outra conta.';
-    fbAuth.signOut();
+    if (fbAuth) {                                // modo com login: e-mail não liberado
+      const quem = fbAuth.currentUser ? fbAuth.currentUser.email : 'Esta conta';
+      loginNote = quem + ' não tem permissão para acessar. Entre com outra conta.';
+      fbAuth.signOut();
+    } else {                                     // modo aberto: regras não publicadas
+      ultimoErro = 'Sem permissão no banco. No Firebase, publique as regras do arquivo firestore.rules (Firestore Database → Regras → Publicar).';
+      setSave('Sem permissão', 'err');
+    }
   } else {
     const cod = e && e.code ? e.code : 'desconhecido';
     ultimoErro = 'Erro do banco de dados (' + cod + '). Confira se o Firestore foi criado e se as regras foram publicadas no Firebase.';
@@ -127,7 +137,7 @@ async function persist() {
     const cod = e && e.code ? e.code : 'desconhecido';
     setSave(cod === 'permission-denied' ? 'Sem permissão' : 'Erro ao salvar', 'err');
     alert(cod === 'permission-denied'
-      ? 'Não foi possível salvar: este e-mail não tem permissão. Confira os e-mails em firestore.rules e publique as regras no Firebase.'
+      ? 'Não foi possível salvar: sem permissão. Confira se as regras do Firestore foram publicadas no Firebase (arquivo firestore.rules).'
       : 'Não foi possível salvar (' + cod + '). Confira sua internet e as configurações do Firebase.');
   }
 }
