@@ -4,12 +4,12 @@
    e as regras do Firestore (veja firestore.rules e o README).
    ===================================================================== */
 const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyBJiKxp_nbMX2IidWib0ljUTbirl2qgtxk",
-  authDomain: "ficacasamento.firebaseapp.com",
-  projectId: "ficacasamento",
-  storageBucket: "ficacasamento.firebasestorage.app",
-  messagingSenderId: "874378170598",
-  appId: "1:874378170598:web:b8646047176dfcaa532b27"
+  apiKey: "AIzaSyBIgqWBqaJX_xQGEZVITvPD3OMRkUwtbb8",
+  authDomain: "rifacasamento-60505.firebaseapp.com",
+  projectId: "rifacasamento-60505",
+  storageBucket: "rifacasamento-60505.firebasestorage.app",
+  messagingSenderId: "1078045405899",
+  appId: "1:1078045405899:web:83602bc9cc77f0e8d6e14e"
 };
 
 /* Onde as vendas ficam no banco */
